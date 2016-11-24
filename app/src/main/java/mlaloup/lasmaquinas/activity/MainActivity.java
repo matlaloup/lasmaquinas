@@ -1,14 +1,13 @@
 package mlaloup.lasmaquinas.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -38,6 +37,26 @@ public class MainActivity extends AppCompatActivity {
     private ListView rankingList;
 
 
+    /**
+     * Appelé par clic sur le bouton "configure"
+     * @param view
+     */
+    public void configure(View view) {
+        //TODO intent de configuration
+        Intent settingsIntent = new Intent(this, SettingsActivity.class);
+        startActivity(settingsIntent);
+
+//        updateRankingsWithDefaultSettings();
+    }
+
+    /**
+     * Appelé par clic sur le bouton "update"
+     * @param view
+     */
+    public void update(View view) {
+        updateRankingsFromBleauInfo();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +66,13 @@ public class MainActivity extends AppCompatActivity {
 
         defaultSettings = BleauRankSettings.load(getResources());
 
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        loadLastRanking();
+
+
+    }
+
+    private void loadLastRanking() {
+        SharedPreferences preferences = prefs();
         String lastRankingJson = preferences.getString(LAST_RANKING_KEY, null);
         Ranking lastRanking = null;
         if (lastRankingJson != null) {
@@ -60,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         updateUI(lastRanking);
-
     }
 
 
@@ -101,44 +125,31 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void configure(View view) {
-        //TODO intent de configuration
-        updateRankingsWithDefaultSettings();
-    }
+
 
     protected void updateRankingsWithDefaultSettings() {
         setDefaultSettings();
-        updateRankings();
+        updateRankingsFromBleauInfo();
     }
 
     protected void setDefaultSettings() {
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         String jsonRanking = new Gson().toJson(defaultSettings);
         //saves the new settings
-        preferences.edit().putString(SETTINGS_KEY, jsonRanking).commit();
+        prefs().edit().putString(SETTINGS_KEY, jsonRanking).commit();
     }
 
 
-    public void update(View view) {
-        updateRankings();
-    }
 
-    protected void updateRankings() {
+    protected void updateRankingsFromBleauInfo() {
         AsyncTask<String, Void, Ranking> task = new AsyncTask<String, Void, Ranking>() {
             @Override
             protected Ranking doInBackground(String... params) {
                 try {
-                    SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-                    Gson gson = new Gson();
-                    String jsonSettings = preferences.getString(SETTINGS_KEY, gson.toJson(defaultSettings));
-                    BleauRankSettings settings = gson.fromJson(jsonSettings, BleauRankSettings.class);
+                    BleauRankSettings settings = loadSettings();
 
                     BleauInfoParser parser = new BleauInfoParser();
                     Ranking ranking = parser.parseTickLists(settings);
-
-                    String jsonRanking = new Gson().toJson(ranking);
-                    //saves the new ranking
-                    preferences.edit().putString(LAST_RANKING_KEY, jsonRanking).commit();
+                    saveRankings(ranking);
                     return ranking;
                 } catch (Exception e) {
                     Log.e(TAG, "Error while parsing ranking !", e);
@@ -154,4 +165,21 @@ public class MainActivity extends AppCompatActivity {
 
         AsyncTask<String, Void, Ranking> async = task.execute();
     }
+
+    protected void saveRankings(Ranking ranking) {
+        String jsonRanking = new Gson().toJson(ranking);
+        //saves the new ranking
+        prefs().edit().putString(LAST_RANKING_KEY, jsonRanking).commit();
+    }
+
+    private BleauRankSettings loadSettings() {
+        Gson gson = new Gson();
+        String jsonSettings = prefs().getString(SETTINGS_KEY, gson.toJson(defaultSettings));
+        return gson.fromJson(jsonSettings, BleauRankSettings.class);
+    }
+
+    private SharedPreferences prefs() {
+        return getPreferences(MODE_PRIVATE);
+    }
+
 }

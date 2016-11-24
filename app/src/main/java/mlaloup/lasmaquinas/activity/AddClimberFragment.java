@@ -1,16 +1,25 @@
 package mlaloup.lasmaquinas.activity;
 
+import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.DataSetObserver;
+import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,46 +29,67 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-public class AddClimberActivity extends AppCompatActivity {
+public class AddClimberFragment extends Fragment  {
 
-    private static final String TAG = "AddClimberActivity";
+    private static final String TAG = "AddClimberFragment";
 
     private static final String CLIMBERS_KEY = "climbers";
 
     private ListView climberListView;
 
-    private ArrayAdapter climbersAdapter;
+    private Button removeButton;
+
+    private ArrayAdapter<String> climbersAdapter;
 
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_climber);
-        climberListView = (ListView) findViewById(R.id.list_climbers);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View result = inflater.inflate(R.layout.activity_add_climber, container, false);
+        climberListView = (ListView) result.findViewById(R.id.climber_list);
+        setHasOptionsMenu(true);
+
+
         updateUI();
+        return result;
     }
 
     private void updateUI() {
         List<String> climberList = new ArrayList<>(getClimbers());
 
         if (climbersAdapter == null) {
-            climbersAdapter = new ArrayAdapter<>(this,
+            climbersAdapter = new ArrayAdapter<String>(getActivity(),
                     R.layout.item_climber,
                     R.id.climber_name,
-                    climberList);
+                    climberList) {
+
+                @NonNull
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    View result = super.getView(position, convertView, parent);
+                    Button button = (Button) result.findViewById(R.id.action_remove_climber);
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            removeClimber(v);
+                        }
+                    });
+                    return  result;
+
+            }
+            };
             climberListView.setAdapter(climbersAdapter);
         } else {
             climbersAdapter.clear();
             climbersAdapter.addAll(climberList);
             climbersAdapter.notifyDataSetChanged();
         }
-
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.climbers_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        super.onCreateOptionsMenu(menu,menuInflater);
+        menuInflater.inflate(R.menu.climbers_menu, menu);
     }
 
     @Override
@@ -74,12 +104,12 @@ public class AddClimberActivity extends AppCompatActivity {
     }
 
     protected void addClimber() {
-        final EditText climberEditText = new EditText(this);
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Add a new climber")
-                .setMessage("Type bleau.info login name")
+        final EditText climberEditText = new EditText(getActivity());
+        AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                .setTitle("Ajouter une machine !")
+                .setMessage("Saisissez le login bleau.info")
                 .setView(climberEditText)
-                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Ajouter", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String climber = String.valueOf(climberEditText.getText());
@@ -87,7 +117,7 @@ public class AddClimberActivity extends AppCompatActivity {
                         updateUI();
                     }
                 })
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton("Annuler", null)
                 .create();
         dialog.show();
     }
@@ -100,13 +130,15 @@ public class AddClimberActivity extends AppCompatActivity {
         Log.d(TAG, "Climber added : " + climber);
     }
 
-    public void removeClimber(View view) {
+
+    protected void removeClimber(View view) {
         View parent = (View) view.getParent();
         TextView climberTextView = (TextView) parent.findViewById(R.id.climber_name);
         String climber = String.valueOf(climberTextView.getText());
         removeClimber(climber);
         updateUI();
     }
+
 
     protected void removeClimber(String climber) {
         Set<String> climbers = getClimbers();
@@ -121,6 +153,6 @@ public class AddClimberActivity extends AppCompatActivity {
     }
 
     private SharedPreferences settings(){
-        return getPreferences(MODE_PRIVATE);
+        return getActivity().getPreferences(Context.MODE_PRIVATE);
     }
 }
