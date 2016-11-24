@@ -4,7 +4,9 @@ import android.content.res.Resources;
 
 import java.io.InputStream;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Properties;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -15,7 +17,7 @@ import mlaloup.lasmaquinas.activity.R;
 
 public class BleauRankSettings {
 
-	private SortedSet<String> users = new TreeSet<>();
+	private Set<String> users = new LinkedHashSet<>();
 
 	private TickListSettings tickListSettings = new TickListSettings();
 
@@ -67,8 +69,12 @@ public class BleauRankSettings {
 		}
 	}
 
-	public SortedSet<String> getUsers() {
-		return Collections.unmodifiableSortedSet(users);
+	public void setUsers(Set<String> users) {
+		this.users = users;
+	}
+
+	public Set<String> getUsers() {
+		return users;
 	}
 
 	@Override

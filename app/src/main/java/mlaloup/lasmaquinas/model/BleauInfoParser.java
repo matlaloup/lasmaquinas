@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -58,7 +59,7 @@ public class BleauInfoParser {
 	}
 
 	public Ranking parseTickLists(BleauRankSettings config) throws Exception {
-		SortedSet<String> users = config.getUsers();
+		Set<String> users = config.getUsers();
 		Period period = new Period(config);
 		Ranking ranking = new Ranking("Las maquinas " + period, config);
 

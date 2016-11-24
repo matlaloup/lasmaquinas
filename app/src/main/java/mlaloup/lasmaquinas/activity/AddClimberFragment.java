@@ -3,6 +3,7 @@ package mlaloup.lasmaquinas.activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.preference.PreferenceFragment;
@@ -32,8 +33,6 @@ import java.util.Set;
 public class AddClimberFragment extends Fragment  {
 
     private static final String TAG = "AddClimberFragment";
-
-    private static final String CLIMBERS_KEY = "climbers";
 
     private ListView climberListView;
 
@@ -126,7 +125,7 @@ public class AddClimberFragment extends Fragment  {
         Set<String> climbers = getClimbers();
         //TODO : check that the climber has a bleau info profile.
         climbers.add(climber);
-        settings().edit().putStringSet(CLIMBERS_KEY,climbers).commit();
+        prefs().edit().putStringSet(SettingsActivity.CLIMBERS_KEY,climbers).commit();
         Log.d(TAG, "Climber added : " + climber);
     }
 
@@ -143,16 +142,17 @@ public class AddClimberFragment extends Fragment  {
     protected void removeClimber(String climber) {
         Set<String> climbers = getClimbers();
         climbers.remove(climber);
-        settings().edit().putStringSet(CLIMBERS_KEY,climbers).commit();
+        prefs().edit().putStringSet(SettingsActivity.CLIMBERS_KEY,climbers).commit();
         Log.d(TAG, "Climber removed : " + climber);
     }
 
     @NonNull
     private Set<String> getClimbers() {
-        return settings().getStringSet(CLIMBERS_KEY, new LinkedHashSet<String>());
+        return prefs().getStringSet(SettingsActivity.CLIMBERS_KEY, new LinkedHashSet<String>());
     }
 
-    private SharedPreferences settings(){
-        return getActivity().getPreferences(Context.MODE_PRIVATE);
+    private SharedPreferences prefs() {
+        return PreferencesHelper.prefs(getActivity().getApplicationContext());
     }
+
 }

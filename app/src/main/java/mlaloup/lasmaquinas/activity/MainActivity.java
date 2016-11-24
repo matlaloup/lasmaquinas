@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 
 import mlaloup.lasmaquinas.model.BleauInfoParser;
@@ -30,9 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String LAST_RANKING_KEY = "lastRanking";
 
-    private static final String SETTINGS_KEY = "settings";
-
-    private BleauRankSettings defaultSettings;
 
     private ListView rankingList;
 
@@ -45,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         //TODO intent de configuration
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
-
 //        updateRankingsWithDefaultSettings();
     }
 
@@ -64,16 +61,11 @@ public class MainActivity extends AppCompatActivity {
 
         rankingList = (ListView) findViewById(R.id.last_ranking);
 
-        defaultSettings = BleauRankSettings.load(getResources());
-
         loadLastRanking();
-
-
     }
 
     private void loadLastRanking() {
-        SharedPreferences preferences = prefs();
-        String lastRankingJson = preferences.getString(LAST_RANKING_KEY, null);
+        String lastRankingJson = prefs().getString(LAST_RANKING_KEY, null);
         Ranking lastRanking = null;
         if (lastRankingJson != null) {
             try {
@@ -126,20 +118,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    protected void updateRankingsWithDefaultSettings() {
-        setDefaultSettings();
-        updateRankingsFromBleauInfo();
-    }
-
-    protected void setDefaultSettings() {
-        String jsonRanking = new Gson().toJson(defaultSettings);
-        //saves the new settings
-        prefs().edit().putString(SETTINGS_KEY, jsonRanking).commit();
-    }
-
-
-
     protected void updateRankingsFromBleauInfo() {
         AsyncTask<String, Void, Ranking> task = new AsyncTask<String, Void, Ranking>() {
             @Override
@@ -173,13 +151,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private BleauRankSettings loadSettings() {
-        Gson gson = new Gson();
-        String jsonSettings = prefs().getString(SETTINGS_KEY, gson.toJson(defaultSettings));
-        return gson.fromJson(jsonSettings, BleauRankSettings.class);
+        BleauRankSettings settings = BleauRankSettings.load(getResources());
+        Set<String> climbers = prefs().getStringSet(SettingsActivity.CLIMBERS_KEY, settings.getUsers());
+        settings.setUsers(climbers);
+        return settings;
     }
 
     private SharedPreferences prefs() {
-        return getPreferences(MODE_PRIVATE);
+        return PreferencesHelper.prefs(getApplicationContext());
     }
 
 }
