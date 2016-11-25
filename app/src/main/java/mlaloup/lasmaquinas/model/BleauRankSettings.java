@@ -1,5 +1,7 @@
 package mlaloup.lasmaquinas.model;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 
 import java.io.InputStream;
@@ -13,7 +15,9 @@ import java.util.TreeSet;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import mlaloup.lasmaquinas.activity.PreferencesHelper;
 import mlaloup.lasmaquinas.activity.R;
+import mlaloup.lasmaquinas.activity.SettingsActivity;
 
 public class BleauRankSettings {
 
@@ -30,6 +34,24 @@ public class BleauRankSettings {
 	private BleauRankSettings() {
 	}
 
+
+	public static BleauRankSettings loadFromPreferences(Activity activity) {
+		SharedPreferences preferences = PreferencesHelper.prefs(activity.getApplicationContext());
+		Resources resources = activity.getResources();
+		BleauRankSettings bleauRaceConfig = load(resources);
+		int defaultMaxAscents = bleauRaceConfig.getTickListSettings().getMaxAscentsCount();
+		int defaultDuration = bleauRaceConfig.getTickListSettings().getMonthDuration();
+
+		//TODO : homogénéiser les constantes.
+		int maxAscents = preferences.getInt(SettingsActivity.MAX_ASCENTS_COUNT_KEY,defaultMaxAscents);
+		int monthDuration = preferences.getInt(SettingsActivity.MONTH_DURATION_KEY,defaultDuration);
+		Set<String> users = preferences.getStringSet(SettingsActivity.CLIMBERS_KEY, bleauRaceConfig.getUsers());
+        
+		bleauRaceConfig.setUsers(users);
+        bleauRaceConfig.getTickListSettings().setMaxAscentsCount(maxAscents);
+        bleauRaceConfig.getTickListSettings().setMonthDuration(monthDuration);
+        return bleauRaceConfig;
+	}
 
 	public static BleauRankSettings load(Resources resources) {
 		try {

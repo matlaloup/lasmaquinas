@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected Ranking doInBackground(String... params) {
                 try {
-                    BleauRankSettings settings = loadSettings();
+                    BleauRankSettings settings = BleauRankSettings.loadFromPreferences(MainActivity.this);
 
                     BleauInfoParser parser = new BleauInfoParser();
                     Ranking ranking = parser.parseTickLists(settings);
@@ -150,12 +150,6 @@ public class MainActivity extends AppCompatActivity {
         prefs().edit().putString(LAST_RANKING_KEY, jsonRanking).commit();
     }
 
-    private BleauRankSettings loadSettings() {
-        BleauRankSettings settings = BleauRankSettings.load(getResources());
-        Set<String> climbers = prefs().getStringSet(SettingsActivity.CLIMBERS_KEY, settings.getUsers());
-        settings.setUsers(climbers);
-        return settings;
-    }
 
     private SharedPreferences prefs() {
         return PreferencesHelper.prefs(getApplicationContext());
