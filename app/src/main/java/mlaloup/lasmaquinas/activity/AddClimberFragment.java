@@ -30,6 +30,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import mlaloup.lasmaquinas.model.BleauRankSettings;
+
 public class AddClimberFragment extends Fragment  {
 
     private static final String TAG = "AddClimberFragment";
@@ -148,7 +150,7 @@ public class AddClimberFragment extends Fragment  {
 
     @NonNull
     private Set<String> getClimbers() {
-        return prefs().getStringSet(SettingsActivity.CLIMBERS_KEY, new LinkedHashSet<String>());
+        return prefs().getStringSet(SettingsActivity.CLIMBERS_KEY, BleauRankSettings.load(getResources()).getUsers());
     }
 
     private SharedPreferences prefs() {

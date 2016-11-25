@@ -46,7 +46,7 @@ public class BleauRankSettings {
 		int maxAscents = preferences.getInt(SettingsActivity.MAX_ASCENTS_COUNT_KEY,defaultMaxAscents);
 		int monthDuration = preferences.getInt(SettingsActivity.MONTH_DURATION_KEY,defaultDuration);
 		Set<String> users = preferences.getStringSet(SettingsActivity.CLIMBERS_KEY, bleauRaceConfig.getUsers());
-        
+
 		bleauRaceConfig.setUsers(users);
         bleauRaceConfig.getTickListSettings().setMaxAscentsCount(maxAscents);
         bleauRaceConfig.getTickListSettings().setMonthDuration(monthDuration);
