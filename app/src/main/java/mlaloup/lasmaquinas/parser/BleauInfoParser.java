@@ -92,7 +92,7 @@ public class BleauInfoParser {
     public Ranking parseTickLists(RankingSettings config) throws Exception {
         Set<String> users = config.getUsers();
         Period period = new Period(config);
-        Ranking ranking = new Ranking(period.toString() + " | " + config.getTickListSettings().getMaxAscentsCount() + " meilleurs blocs", config);
+        Ranking ranking = new Ranking(period.toString() + "\n" + config.getTickListSettings().getMaxAscentsCount() + " meilleurs blocs", config);
 
         for (String user : users) {
             TickList tickList = parseTickList(config, user, period);

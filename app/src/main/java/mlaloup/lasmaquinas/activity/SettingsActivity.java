@@ -117,10 +117,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     public void onHeaderClick(Header header, int position) {
         if (header.id == R.id.month_duration) {
-            addNumberPickerDialog("Nombre de mois glissants :",MONTH_DURATION_KEY,DEFAULT_MONTH_DURATION,60);
+            addNumberPickerDialog("Nombre de mois glissants :",MONTH_DURATION_KEY,DEFAULT_MONTH_DURATION,120);
         }
         if (header.id == R.id.max_ascents) {
-            addNumberPickerDialog("Nombre max de blocs :",MAX_ASCENTS_COUNT_KEY,DEFAULT_MAX_ASCENTS_COUNT,100);
+            addNumberPickerDialog("Nombre max de blocs :",MAX_ASCENTS_COUNT_KEY,DEFAULT_MAX_ASCENTS_COUNT,200);
         }
         super.onHeaderClick(header, position);
     }
@@ -134,23 +134,25 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
        np.setMinValue(1);
        np.setMaxValue(maxValue);
        np.setWrapSelectorWheel(false);
-       np.setValue(prefs().getInt(prefsKey,defaultValue));
+       int currentValue = prefs().getInt(prefsKey,defaultValue);
+       np.setValue(currentValue);
+
        alert.setView(np);
 
        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
            public void onClick(DialogInterface dialog, int whichButton) {
+               //indispensable pour faire fonctionner la saisie clavier
+               np.clearFocus();
+
+               //sauvegarde de la valeur.
                prefs().edit().putInt(prefsKey,np.getValue()).commit();
-               dialog.dismiss();
+
                // Trigger the summary text to be updated.
                invalidateHeaders();
            }
        });
 
-       alert.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
-           public void onClick(DialogInterface dialog, int whichButton) {
-               dialog.dismiss();
-           }
-       });
+       alert.setNegativeButton("Annuler", null);
 
        alert.show();
    }

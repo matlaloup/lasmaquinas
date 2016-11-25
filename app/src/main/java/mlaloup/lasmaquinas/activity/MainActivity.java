@@ -9,9 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -107,17 +109,19 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        updateUI(lastRanking);
+        if(lastRanking != null){
+            updateUI(lastRanking);
+        }
     }
 
 
     private void updateUI(Ranking ranking) {
         TextView textView = (TextView) findViewById(R.id.ranking_title);
         if (ranking == null) {
-            textView.setText(null);
+            Toast toast = Toast.makeText(this, "Impossible d'actualiser le classement. Vérifiez la connexion internet !", Toast.LENGTH_SHORT);
+            toast.show();
             return;
         }
-
 
         SortedSet<TickList> ticklists = ranking.getTickLists();
         String rankingName = ranking.getName();
