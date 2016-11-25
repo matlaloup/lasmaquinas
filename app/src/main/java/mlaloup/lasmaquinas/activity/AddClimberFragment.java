@@ -3,6 +3,7 @@ package mlaloup.lasmaquinas.activity;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -19,13 +20,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import static mlaloup.lasmaquinas.model.settings.RankingSettings.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import mlaloup.lasmaquinas.activity.util.PreferencesHelper;
-import mlaloup.lasmaquinas.model.BleauRankSettings;
+import mlaloup.lasmaquinas.model.Ranking;
+import mlaloup.lasmaquinas.model.settings.RankingSettings;
+import mlaloup.lasmaquinas.parser.BleauInfoParser;
 
 public class AddClimberFragment extends Fragment  {
 
@@ -105,25 +112,114 @@ public class AddClimberFragment extends Fragment  {
                 .setTitle("Ajouter une machine !")
                 .setMessage("Saisissez le login bleau.info")
                 .setView(climberEditText)
-                .setPositiveButton("Ajouter", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String climber = String.valueOf(climberEditText.getText());
-                        addClimber(climber);
-                        updateUI();
-                    }
-                })
+                .setPositiveButton("Ajouter", null)
                 .setNegativeButton("Annuler", null)
                 .create();
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(final DialogInterface dialog) {
+
+                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        String climber = String.valueOf(climberEditText.getText());
+                        String userName = climber.trim();
+                        if(climberAlreadyDefined(userName)){
+                            displayAddClimberError("Machine déjà ajoutée !");
+                            return;
+                        }
+
+                        boolean added = addClimberIfValid(userName);
+                        if(!added){
+                            displayAddClimberError("Login bleau.info invalide !");
+                            return;
+                        }
+                        updateUI();
+
+                        //Ferme la boite de dialogue
+                        dialog.dismiss();
+                    }
+
+                    protected void displayAddClimberError(String message) {
+                        Toast toast = Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
+            }
+        });
+
         dialog.show();
     }
 
-    protected void addClimber(String climber) {
-        Set<String> climbers = getClimbers();
-        //TODO : check that the climber has a bleau info profile.
-        climbers.add(climber);
-        prefs().edit().putStringSet(SettingsActivity.CLIMBERS_KEY,climbers).commit();
+    /**
+     * Ajoute le grimpeur, s'il possède un profil bleau.info. Renvoie faux si ce n'est pas le cas. Renvoie vrai si on est offline.
+     * @param climber
+     * @return
+     */
+    protected boolean addClimberIfValid(String climber) {
+        AsyncTask<String, Void, Boolean> task = checkProfileExistsTask(climber);
+        task.execute();
+        boolean isValid = true;
+        try {
+            isValid = task.get(10, TimeUnit.SECONDS);
+        } catch (Exception e){
+            Log.e(TAG,"Error while checking profile. Took more than 10 seconds. Check internet connexion !");
+            //On autorise la modification offline : on ne verifie pas.
+        }
+        if(!isValid){
+            Log.d(TAG, "Unknown climber. it won't be added : " + climber);
+            return false;
+        }
+
+        addClimber(climber);
+
         Log.d(TAG, "Climber added : " + climber);
+        return true;
+    }
+
+
+    /**
+     * Renvoi vrai si le grimpeur est déjà défini.
+     * @param userName
+     * @return
+     */
+    protected boolean climberAlreadyDefined(String userName) {
+        Set<String> climbers = getClimbers();
+        return climbers.contains(userName);
+    }
+    /**
+     * Ajoute le nouveau grimpeur
+     * @param userName
+     */
+    protected void addClimber(String userName) {
+        Set<String> climbers = getClimbers();
+        climbers.add(userName);
+        prefs().edit().putStringSet(CLIMBERS_KEY,climbers).commit();
+    }
+
+    protected AsyncTask<String, Void, Boolean> checkProfileExistsTask(final String userName) {
+        return new AsyncTask<String, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(String... params) {
+                try {
+                    boolean exists = new BleauInfoParser().checkProfileExists(userName);
+                    return exists;
+                } catch (Exception e) {
+                    Log.e(TAG, "Error while checking profile. Check internet connexion !", e);
+                    //On autorise la modification offline : on ne verifie pas.
+                    return true;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Boolean valid) {
+
+            }
+        };
     }
 
 
@@ -139,13 +235,13 @@ public class AddClimberFragment extends Fragment  {
     protected void removeClimber(String climber) {
         Set<String> climbers = getClimbers();
         climbers.remove(climber);
-        prefs().edit().putStringSet(SettingsActivity.CLIMBERS_KEY,climbers).commit();
+        prefs().edit().putStringSet(CLIMBERS_KEY,climbers).commit();
         Log.d(TAG, "Climber removed : " + climber);
     }
 
     @NonNull
     private Set<String> getClimbers() {
-        return prefs().getStringSet(SettingsActivity.CLIMBERS_KEY, BleauRankSettings.load(getResources()).getUsers());
+        return prefs().getStringSet(CLIMBERS_KEY, RankingSettings.DEFAULT_CLIMBERS);
     }
 
     private SharedPreferences prefs() {

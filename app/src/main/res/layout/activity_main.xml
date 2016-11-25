@@ -51,7 +51,7 @@
             android:paddingRight="16dp"
             android:paddingTop="16dp"
             android:text="Rankings"
-            android:textSize="18dp" />
+            android:textSize="14dp" />
 
         <ListView
             android:id="@+id/last_ranking"

@@ -17,6 +17,9 @@ import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.view.MenuItem;
 import android.widget.NumberPicker;
+import static mlaloup.lasmaquinas.model.settings.TickListSettings.*;
+import static mlaloup.lasmaquinas.model.settings.RankingSettings.*;
+
 
 import java.util.List;
 
@@ -36,11 +39,6 @@ import mlaloup.lasmaquinas.activity.util.PreferencesHelper;
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
-    public static final String CLIMBERS_KEY = "climbers";
-
-    public static final String MONTH_DURATION_KEY = "monthDuration";
-
-    public static final String MAX_ASCENTS_COUNT_KEY = "maxAscentsCount";
 
     private boolean inFragment;
 
@@ -103,10 +101,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         loadHeadersFromResource(R.xml.pref_headers, target);
         for (Header h : target) {
             if (h.id == R.id.month_duration) {
-                h.summary = String.valueOf(prefs().getInt(MONTH_DURATION_KEY,12));
+                h.summary = String.valueOf(prefs().getInt(MONTH_DURATION_KEY, DEFAULT_MONTH_DURATION));
             }
             if (h.id == R.id.max_ascents) {
-                h.summary = String.valueOf(prefs().getInt(MAX_ASCENTS_COUNT_KEY,15));
+                h.summary = String.valueOf(prefs().getInt(MAX_ASCENTS_COUNT_KEY,DEFAULT_MAX_ASCENTS_COUNT));
             }
         }
     }
@@ -119,10 +117,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     public void onHeaderClick(Header header, int position) {
         if (header.id == R.id.month_duration) {
-            addNumberPickerDialog("Nombre de mois glissants :",MONTH_DURATION_KEY,12,60);
+            addNumberPickerDialog("Nombre de mois glissants :",MONTH_DURATION_KEY,DEFAULT_MONTH_DURATION,60);
         }
         if (header.id == R.id.max_ascents) {
-            addNumberPickerDialog("Nombre max de blocs :",MAX_ASCENTS_COUNT_KEY,15,100);
+            addNumberPickerDialog("Nombre max de blocs :",MAX_ASCENTS_COUNT_KEY,DEFAULT_MAX_ASCENTS_COUNT,100);
         }
         super.onHeaderClick(header, position);
     }
@@ -139,7 +137,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
        np.setValue(prefs().getInt(prefsKey,defaultValue));
        alert.setView(np);
 
-       alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+       alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
            public void onClick(DialogInterface dialog, int whichButton) {
                prefs().edit().putInt(prefsKey,np.getValue()).commit();
                dialog.dismiss();

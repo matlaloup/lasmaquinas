@@ -1,14 +1,14 @@
-package mlaloup.lasmaquinas.model;
-
-/**
- * Created by Matthieu on 23/11/2016.
- */
+package mlaloup.lasmaquinas.model.settings;
 
 public class TickListSettings {
 
-    private int maxAscentsCount = 15;
+    public static final int DEFAULT_MONTH_DURATION = 12;
 
-    private int monthDuration = 12;
+    public static final int DEFAULT_MAX_ASCENTS_COUNT = 15;
+
+    private int maxAscentsCount = DEFAULT_MAX_ASCENTS_COUNT;
+
+    private int monthDuration = DEFAULT_MONTH_DURATION;
 
     private transient GradeScoreScale scale = new DefaultGradeScoreScale();
 

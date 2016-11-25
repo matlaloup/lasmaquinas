@@ -12,9 +12,11 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 
+import mlaloup.lasmaquinas.model.settings.TickListSettings;
+
 public class TickList implements Iterable<Ascent>, Comparable<TickList> {
 
-	private String user;
+	private Climber climber;
 
 	private TickListSettings config;
 
@@ -27,14 +29,13 @@ public class TickList implements Iterable<Ascent>, Comparable<TickList> {
 		return ascents.iterator();
 	}
 
-	public TickList(String user, TickListSettings config) {
-		this.user = user;
+	public TickList(Climber climber, TickListSettings config) {
+		this.climber = climber;
 		this.config = config;
 	}
 
 	public void addAscent(Ascent ascent) {
 		ascents.add(ascent);
-
 		addAscentScore(ascent);
 	}
 
@@ -42,19 +43,22 @@ public class TickList implements Iterable<Ascent>, Comparable<TickList> {
 		return score;
 	}
 
-	public String getUser() {
-		return user;
+	public Climber getClimber() {
+		return climber;
 	}
 
 	@Override
 	public int compareTo(TickList o) {
 		int result = new Integer(o.score).compareTo(score);
 		if (result == 0) {
-			return user.compareTo(o.user);
+			return climber.getLogin().compareTo(o.getClimber().getLogin());
 		}
 		return result;
 	}
 
+    /**
+     * Tronque la liste en limitant le nombre de croix au nombre max prévu.
+     */
 	public void truncate() {
 		int maxAscentsCount = config.getMaxAscentsCount();
 		if (ascents.size() <= maxAscentsCount) {

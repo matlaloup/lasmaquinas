@@ -1,5 +1,7 @@
 package mlaloup.lasmaquinas.model;
 
+import mlaloup.lasmaquinas.model.settings.GradeScoreScale;
+
 public class Grade {
 
 	private String grade;

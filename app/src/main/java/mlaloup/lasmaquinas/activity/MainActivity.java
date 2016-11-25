@@ -3,6 +3,7 @@ package mlaloup.lasmaquinas.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,13 +17,14 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
 import mlaloup.lasmaquinas.activity.util.PreferencesHelper;
-import mlaloup.lasmaquinas.model.BleauInfoParser;
-import mlaloup.lasmaquinas.model.BleauRankSettings;
+import mlaloup.lasmaquinas.parser.BleauInfoParser;
+import mlaloup.lasmaquinas.model.settings.RankingSettings;
 import mlaloup.lasmaquinas.model.Ranking;
 import mlaloup.lasmaquinas.model.TickList;
 
@@ -37,12 +39,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * Appelé par clic sur le bouton "configure"
+     * Appelé par clic sur le bouton "paramètres"
      *
      * @param view
      */
     public void configure(View view) {
-        //TODO intent de configuration
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
     }
@@ -85,6 +86,22 @@ public class MainActivity extends AppCompatActivity {
             try {
                 Gson gson = new Gson();
                 lastRanking = gson.fromJson(lastRankingJson, Ranking.class);
+
+                //Clean ticklist corrompue (maj de l'application)
+                Iterator<TickList> iter = lastRanking.getTickLists().iterator();
+                while (iter.hasNext()) {
+                    TickList tickList = iter.next();
+                    if (tickList.getClimber() == null) {
+                        //unknown climber
+                        iter.remove();
+                        continue;
+                    }
+                    if (tickList.getClimber().getLogin() == null) {
+                        //unknown climber
+                        iter.remove();
+                        continue;
+                    }
+                }
             } catch (Exception e) {
                 Log.e(TAG, "Unable to  parse json ranking !", e);
             }
@@ -111,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         int rank = 1;
 
         for (TickList tickList : ticklists) {
-            String user = tickList.getUser();
+            String user = tickList.getClimber().getDisplayName();
             int score = tickList.getScore();
             Map<String, String> datum = new HashMap<>(2);
             datum.put("ranking", rank + " : " + user + " | " + score + " points");
@@ -133,18 +150,24 @@ public class MainActivity extends AppCompatActivity {
 
 
     protected void updateRankingsFromBleauInfo() {
-        AsyncTask<String, Void, Ranking> task = new AsyncTask<String, Void, Ranking>() {
+        AsyncTask<String, Void, Ranking> task = retrieveRankingAsyncTask();
+        task.execute();
+    }
+
+    @NonNull
+    private AsyncTask<String, Void, Ranking> retrieveRankingAsyncTask() {
+        return new AsyncTask<String, Void, Ranking>() {
             @Override
             protected Ranking doInBackground(String... params) {
                 try {
-                    BleauRankSettings settings = BleauRankSettings.loadFromPreferences(MainActivity.this);
+                    RankingSettings settings = RankingSettings.loadFromPreferences(MainActivity.this);
 
                     BleauInfoParser parser = new BleauInfoParser();
                     Ranking ranking = parser.parseTickLists(settings);
                     saveRankings(ranking);
                     return ranking;
                 } catch (Exception e) {
-                    Log.e(TAG, "Error while parsing ranking !", e);
+                    Log.e(TAG, "Error while parsing ranking ! Check internet connexion !", e);
                     return null;
                 }
             }
@@ -154,8 +177,6 @@ public class MainActivity extends AppCompatActivity {
                 updateUI(ranking);
             }
         };
-
-        AsyncTask<String, Void, Ranking> async = task.execute();
     }
 
     protected void saveRankings(Ranking ranking) {
