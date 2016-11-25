@@ -1,13 +1,10 @@
-package mlaloup.lasmaquinas.activity;
+package mlaloup.lasmaquinas.activity.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.test.ApplicationTestCase;
 
-/**
- * Created by Matthieu on 24/11/2016.
- */
 
 public class PreferencesHelper {
 

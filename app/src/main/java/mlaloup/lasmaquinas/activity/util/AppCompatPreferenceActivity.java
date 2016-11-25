@@ -1,4 +1,4 @@
-package mlaloup.lasmaquinas.activity;
+package mlaloup.lasmaquinas.activity.util;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

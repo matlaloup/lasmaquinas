@@ -5,17 +5,14 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import mlaloup.lasmaquinas.activity.PreferencesHelper;
+import mlaloup.lasmaquinas.activity.util.PreferencesHelper;
 import mlaloup.lasmaquinas.activity.R;
 import mlaloup.lasmaquinas.activity.SettingsActivity;
 

@@ -1,16 +1,11 @@
 package mlaloup.lasmaquinas.activity;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.DataSetObserver;
-import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,10 +21,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import mlaloup.lasmaquinas.activity.util.PreferencesHelper;
 import mlaloup.lasmaquinas.model.BleauRankSettings;
 
 public class AddClimberFragment extends Fragment  {

@@ -3,6 +3,7 @@ package mlaloup.lasmaquinas.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,9 +18,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedSet;
 
+import mlaloup.lasmaquinas.activity.util.PreferencesHelper;
 import mlaloup.lasmaquinas.model.BleauInfoParser;
 import mlaloup.lasmaquinas.model.BleauRankSettings;
 import mlaloup.lasmaquinas.model.Ranking;
@@ -37,17 +38,18 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Appelé par clic sur le bouton "configure"
+     *
      * @param view
      */
     public void configure(View view) {
         //TODO intent de configuration
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
-//        updateRankingsWithDefaultSettings();
     }
 
     /**
-     * Appelé par clic sur le bouton "update"
+     * Appelé par clic sur le bouton "actualiser"
+     *
      * @param view
      */
     public void update(View view) {
@@ -57,11 +59,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setupActionBar();
 
+        setContentView(R.layout.activity_main);
         rankingList = (ListView) findViewById(R.id.last_ranking);
 
         loadLastRanking();
+    }
+
+    /**
+     * Set up the {@link android.app.ActionBar}, if the API is available.
+     */
+    private void setupActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setIcon(R.drawable.muscle_toolbar_32);
+        }
     }
 
     private void loadLastRanking() {
