@@ -23,7 +23,7 @@
             android:paddingBottom="10dp"
             android:text="Paramètres"
             android:onClick="configure"
-            android:drawableLeft="@android:drawable/ic_menu_manage"
+            android:drawableLeft="@drawable/ic_settings_black_24dp"
             />
 
         <Button
@@ -33,7 +33,7 @@
             android:paddingBottom="10dp"
             android:onClick="update"
             android:text="Actualiser le classement"
-            android:drawableLeft="@android:drawable/ic_menu_rotate"
+            android:drawableLeft="@drawable/ic_cached_black_24dp"
             />
     </LinearLayout>
 

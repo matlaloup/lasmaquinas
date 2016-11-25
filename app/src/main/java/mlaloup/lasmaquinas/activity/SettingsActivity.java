@@ -3,9 +3,12 @@ package mlaloup.lasmaquinas.activity;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -21,6 +24,8 @@ import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.widget.NumberPicker;
+
 import java.util.List;
 
 /**
@@ -38,6 +43,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     public static final String CLIMBERS_KEY = "climbers";
 
+    public static final String MONTH_DURATION_KEY = "monthDuration";
+
+    public static final String MAX_ASCENTS_COUNT_KEY = "maxAscentsCount";
 
     private boolean inFragment;
 
@@ -98,7 +106,64 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onBuildHeaders(List<Header> target) {
         loadHeadersFromResource(R.xml.pref_headers, target);
+        for (Header h : target) {
+            if (h.id == R.id.month_duration) {
+                h.summary = String.valueOf(prefs().getInt(MONTH_DURATION_KEY,12));
+            }
+            if (h.id == R.id.max_ascents) {
+                h.summary = String.valueOf(prefs().getInt(MAX_ASCENTS_COUNT_KEY,15));
+            }
+        }
     }
+
+    private SharedPreferences prefs(){
+        return PreferencesHelper.prefs(getApplicationContext());
+    }
+
+
+    @Override
+    public void onHeaderClick(Header header, int position) {
+        if (header.id == R.id.month_duration) {
+            addNumberPickerDialog("Nombre de mois glissants :",MONTH_DURATION_KEY,12,60);
+        }
+        if (header.id == R.id.max_ascents) {
+            addNumberPickerDialog("Nombre max de blocs :",MAX_ASCENTS_COUNT_KEY,15,100);
+        }
+        super.onHeaderClick(header, position);
+    }
+
+
+   protected void addNumberPickerDialog(String title, final String prefsKey, int defaultValue, int maxValue ){
+       AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+       alert.setTitle(title);
+       final NumberPicker np = new NumberPicker(this);
+       np.setMinValue(1);
+       np.setMaxValue(maxValue);
+       np.setWrapSelectorWheel(false);
+       np.setValue(prefs().getInt(prefsKey,defaultValue));
+       alert.setView(np);
+
+       alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int whichButton) {
+               prefs().edit().putInt(prefsKey,np.getValue()).commit();
+               dialog.dismiss();
+               // Trigger the summary text to be updated.
+               invalidateHeaders();
+           }
+       });
+
+       alert.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int whichButton) {
+               dialog.dismiss();
+           }
+       });
+
+       alert.show();
+   }
+
+
+
 
     /**
      * A preference value change listener that updates the preference's summary
