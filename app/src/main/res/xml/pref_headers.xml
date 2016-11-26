@@ -15,4 +15,9 @@
         android:title="Nombre de mois glissants"
         android:icon="@drawable/ic_access_alarms_black_24dp"/>
 
+    <header
+        android:id="@+id/reset"
+        android:title="Réinitialiser les paramètres"
+        android:icon="@drawable/ic_settings_backup_restore_black_24dp"/>
+
 </preference-headers>

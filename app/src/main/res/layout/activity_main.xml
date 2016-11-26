@@ -50,7 +50,6 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingTop="16dp"
-            android:text="Rankings"
             android:textSize="14dp" />
 
         <ListView

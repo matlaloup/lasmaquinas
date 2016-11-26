@@ -22,9 +22,11 @@ import static org.mlaloup.lasmaquinas.model.settings.RankingSettings.*;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.mlaloup.lasmaquinas.activity.util.AppCompatPreferenceActivity;
 import org.mlaloup.lasmaquinas.activity.util.PreferencesHelper;
+import org.mlaloup.lasmaquinas.model.settings.RankingSettings;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -122,11 +124,38 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         if (header.id == R.id.max_ascents) {
             addNumberPickerDialog("Nombre max de blocs :",MAX_ASCENTS_COUNT_KEY,DEFAULT_MAX_ASCENTS_COUNT,200);
         }
+        if(header.id == R.id.reset){
+            addResetSettingsDialog();
+        }
         super.onHeaderClick(header, position);
     }
 
+    protected void addResetSettingsDialog() {
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setTitle("Réinitialisation des paramètres")
+                .setMessage("Etes vous certain de vouloir réinitialiser la configuration ?")
+                .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //reset
+                        prefs().edit().clear().commit();
 
-   protected void addNumberPickerDialog(String title, final String prefsKey, int defaultValue, int maxValue ){
+                        //Force l'actualisation.
+                        Intent mainIntent = new Intent(SettingsActivity.this, MainActivity.class);
+                        mainIntent.putExtra(MainActivity.FORCE_UPDATE,true);
+                        startActivity(mainIntent);
+                    }
+                })
+                .setNegativeButton("Non", null)
+                .create();
+
+        alert.show();
+    }
+
+
+
+
+    protected void addNumberPickerDialog(String title, final String prefsKey, int defaultValue, int maxValue ){
        AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
        alert.setTitle(title);

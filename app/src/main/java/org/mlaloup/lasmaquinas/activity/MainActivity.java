@@ -33,7 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    private static final String LAST_RANKING_KEY = "lastRanking";
+    public static final String LAST_RANKING_KEY = "lastRanking";
+
+    public static final String FORCE_UPDATE = "forceUpdateIfRequested";
 
 
     private ListView rankingList;
@@ -63,10 +65,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setupActionBar();
 
+
         setContentView(R.layout.activity_main);
         rankingList = (ListView) findViewById(R.id.last_ranking);
 
         loadLastRanking();
+
+        forceUpdateIfRequested();
+    }
+
+    /**
+     * Mets a jour le classement si le paramètre FORCE UPDATE est fourni.
+     */
+    protected void forceUpdateIfRequested() {
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            Object forceUpdate = getIntent().getExtras().get(FORCE_UPDATE);
+            if (forceUpdate != null) {
+                updateRankingsFromBleauInfo();
+            }
+        }
     }
 
     /**
@@ -108,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        if(lastRanking != null){
+        if (lastRanking != null) {
             updateUI(lastRanking);
         }
     }
