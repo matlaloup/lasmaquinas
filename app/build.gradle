@@ -4,7 +4,7 @@ android {
     compileSdkVersion 24
     buildToolsVersion "25.0.1"
     defaultConfig {
-        applicationId "mlaloup.lasmaquinas"
+        applicationId "org.mlaloup.lasmaquinas"
         minSdkVersion 15
         targetSdkVersion 24
         versionCode 1
