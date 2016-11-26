@@ -13,7 +13,7 @@ import org.mlaloup.lasmaquinas.activity.util.PreferencesHelper;
 
 public class RankingSettings {
 
-	public static final Set<String>  DEFAULT_CLIMBERS;
+	private static final Set<String>  DEFAULT_CLIMBERS;
 
 	static {
 		Set<String> defaultClimbers = new LinkedHashSet<>();
@@ -51,12 +51,16 @@ public class RankingSettings {
 
 		int maxAscents = preferences.getInt(MAX_ASCENTS_COUNT_KEY,TickListSettings.DEFAULT_MAX_ASCENTS_COUNT);
 		int monthDuration = preferences.getInt(MONTH_DURATION_KEY,TickListSettings.DEFAULT_MONTH_DURATION);
-		Set<String> users = preferences.getStringSet(CLIMBERS_KEY, DEFAULT_CLIMBERS);
+		Set<String> users = preferences.getStringSet(CLIMBERS_KEY, defaultClimbers());
 
 		settings.setUsers(users);
         settings.getTickListSettings().setMaxAscentsCount(maxAscents);
         settings.getTickListSettings().setMonthDuration(monthDuration);
         return settings;
+	}
+
+	public static final Set<String> defaultClimbers(){
+		return new LinkedHashSet<>(DEFAULT_CLIMBERS);
 	}
 
 

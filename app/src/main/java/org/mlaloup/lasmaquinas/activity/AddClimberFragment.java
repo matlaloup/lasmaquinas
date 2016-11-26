@@ -241,7 +241,7 @@ public class AddClimberFragment extends Fragment  {
 
     @NonNull
     private Set<String> getClimbers() {
-        return prefs().getStringSet(CLIMBERS_KEY, RankingSettings.DEFAULT_CLIMBERS);
+        return prefs().getStringSet(CLIMBERS_KEY, defaultClimbers());
     }
 
     private SharedPreferences prefs() {
