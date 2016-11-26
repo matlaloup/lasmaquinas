@@ -1,4 +1,4 @@
-package mlaloup.lasmaquinas.activity;
+package org.mlaloup.lasmaquinas.activity;
 
 
 import android.annotation.TargetApi;
@@ -17,14 +17,14 @@ import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.view.MenuItem;
 import android.widget.NumberPicker;
-import static mlaloup.lasmaquinas.model.settings.TickListSettings.*;
-import static mlaloup.lasmaquinas.model.settings.RankingSettings.*;
+import static org.mlaloup.lasmaquinas.model.settings.TickListSettings.*;
+import static org.mlaloup.lasmaquinas.model.settings.RankingSettings.*;
 
 
 import java.util.List;
 
-import mlaloup.lasmaquinas.activity.util.AppCompatPreferenceActivity;
-import mlaloup.lasmaquinas.activity.util.PreferencesHelper;
+import org.mlaloup.lasmaquinas.activity.util.AppCompatPreferenceActivity;
+import org.mlaloup.lasmaquinas.activity.util.PreferencesHelper;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On

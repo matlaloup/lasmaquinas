@@ -1,4 +1,4 @@
-package mlaloup.lasmaquinas.model.settings;
+package org.mlaloup.lasmaquinas.model.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,7 +9,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import mlaloup.lasmaquinas.activity.util.PreferencesHelper;
+import org.mlaloup.lasmaquinas.activity.util.PreferencesHelper;
 
 public class RankingSettings {
 

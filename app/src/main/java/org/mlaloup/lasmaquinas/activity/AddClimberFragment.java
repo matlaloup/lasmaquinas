@@ -1,4 +1,4 @@
-package mlaloup.lasmaquinas.activity;
+package org.mlaloup.lasmaquinas.activity;
 
 import android.app.Fragment;
 import android.content.DialogInterface;
@@ -22,17 +22,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import static mlaloup.lasmaquinas.model.settings.RankingSettings.*;
+import static org.mlaloup.lasmaquinas.model.settings.RankingSettings.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import mlaloup.lasmaquinas.activity.util.PreferencesHelper;
-import mlaloup.lasmaquinas.model.Ranking;
-import mlaloup.lasmaquinas.model.settings.RankingSettings;
-import mlaloup.lasmaquinas.parser.BleauInfoParser;
+import org.mlaloup.lasmaquinas.activity.util.PreferencesHelper;
+
+import org.mlaloup.lasmaquinas.model.settings.RankingSettings;
+import org.mlaloup.lasmaquinas.parser.BleauInfoParser;
 
 public class AddClimberFragment extends Fragment  {
 

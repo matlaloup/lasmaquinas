@@ -1,9 +1,9 @@
-package mlaloup.lasmaquinas.model;
+package org.mlaloup.lasmaquinas.model;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import mlaloup.lasmaquinas.model.settings.RankingSettings;
+import org.mlaloup.lasmaquinas.model.settings.RankingSettings;
 
 public class Ranking {
 

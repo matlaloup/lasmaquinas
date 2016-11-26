@@ -1,4 +1,4 @@
-package mlaloup.lasmaquinas.activity;
+package org.mlaloup.lasmaquinas.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -24,11 +23,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
-import mlaloup.lasmaquinas.activity.util.PreferencesHelper;
-import mlaloup.lasmaquinas.parser.BleauInfoParser;
-import mlaloup.lasmaquinas.model.settings.RankingSettings;
-import mlaloup.lasmaquinas.model.Ranking;
-import mlaloup.lasmaquinas.model.TickList;
+import org.mlaloup.lasmaquinas.activity.util.PreferencesHelper;
+import org.mlaloup.lasmaquinas.parser.BleauInfoParser;
+import org.mlaloup.lasmaquinas.model.settings.RankingSettings;
+import org.mlaloup.lasmaquinas.model.Ranking;
+import org.mlaloup.lasmaquinas.model.TickList;
 
 public class MainActivity extends AppCompatActivity {
 

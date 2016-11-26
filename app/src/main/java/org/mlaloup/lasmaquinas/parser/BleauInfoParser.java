@@ -1,7 +1,6 @@
-package mlaloup.lasmaquinas.parser;
+package org.mlaloup.lasmaquinas.parser;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
@@ -19,9 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,12 +27,12 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import mlaloup.lasmaquinas.model.Ascent;
-import mlaloup.lasmaquinas.model.Climber;
-import mlaloup.lasmaquinas.model.settings.RankingSettings;
-import mlaloup.lasmaquinas.model.Grade;
-import mlaloup.lasmaquinas.model.Ranking;
-import mlaloup.lasmaquinas.model.TickList;
+import org.mlaloup.lasmaquinas.model.Ascent;
+import org.mlaloup.lasmaquinas.model.Climber;
+import org.mlaloup.lasmaquinas.model.settings.RankingSettings;
+import org.mlaloup.lasmaquinas.model.Grade;
+import org.mlaloup.lasmaquinas.model.Ranking;
+import org.mlaloup.lasmaquinas.model.TickList;
 
 public class BleauInfoParser {
 

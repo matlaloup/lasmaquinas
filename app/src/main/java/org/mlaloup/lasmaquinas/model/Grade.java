@@ -1,6 +1,6 @@
-package mlaloup.lasmaquinas.model;
+package org.mlaloup.lasmaquinas.model;
 
-import mlaloup.lasmaquinas.model.settings.GradeScoreScale;
+import org.mlaloup.lasmaquinas.model.settings.GradeScoreScale;
 
 public class Grade {
 

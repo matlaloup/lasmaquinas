@@ -1,4 +1,4 @@
-package mlaloup.lasmaquinas.model.settings;
+package org.mlaloup.lasmaquinas.model.settings;
 
 public class DefaultGradeScoreScale implements GradeScoreScale {
 

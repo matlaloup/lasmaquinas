@@ -1,4 +1,4 @@
-package mlaloup.lasmaquinas.model;
+package org.mlaloup.lasmaquinas.model;
 
 import java.util.Date;
 

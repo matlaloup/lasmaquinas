@@ -1,4 +1,4 @@
-package mlaloup.lasmaquinas.model;
+package org.mlaloup.lasmaquinas.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,7 +12,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 
-import mlaloup.lasmaquinas.model.settings.TickListSettings;
+import org.mlaloup.lasmaquinas.model.settings.TickListSettings;
 
 public class TickList implements Iterable<Ascent>, Comparable<TickList> {
 
