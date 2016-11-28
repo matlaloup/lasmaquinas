@@ -12,6 +12,13 @@ public class TickListSettings {
 
     private transient GradeScoreScale scale = new DefaultGradeScoreScale();
 
+    public static TickListSettings unlimited(){
+        TickListSettings result = new TickListSettings();
+        result.setMaxAscentsCount(Integer.MAX_VALUE);
+        result.setMonthDuration(Integer.MAX_VALUE);
+        return result;
+    }
+
     public void setMaxAscentsCount(int maxAscentsCount) {
         this.maxAscentsCount = maxAscentsCount;
     }

@@ -2,6 +2,12 @@ package org.mlaloup.lasmaquinas.model;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.mlaloup.lasmaquinas.model.settings.TickListSettings;
+
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Climber {
 
@@ -10,6 +16,10 @@ public class Climber {
     private String fullName;
 
     private String countryBigram;
+
+    private TickList tickList = new TickList(this, TickListSettings.unlimited());
+
+    private Set<Boulder> projects = new HashSet<>();
 
     public Climber(String login){
         this.login = login;
@@ -45,6 +55,17 @@ public class Climber {
         return login;
     }
 
+    public TickList getTickList() {
+        return tickList;
+    }
+
+    public Set<Boulder> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(Set<Boulder> projects) {
+        this.projects = projects;
+    }
 
     @Override
     public boolean equals(Object o) {

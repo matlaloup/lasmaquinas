@@ -78,14 +78,14 @@ public class TickList implements Iterable<Ascent>, Comparable<TickList> {
 	}
 
 	private void addAscentScore(Ascent ascent) {
-		int newScore = ascent.getGrade().getScore(config.getScale());
+		int newScore = ascent.getBoulder().getGrade().getScore(config.getScale());
 		score += newScore;
 	}
 
 	public String getSummary() {
 		Map<String, Set<Ascent>> map = new TreeMap<>();
 		for (Ascent ascent : ascents) {
-			Grade grade = ascent.getGrade();
+			Grade grade = ascent.getBoulder().getGrade();
 			Set<Ascent> ascentsForGrade = map.get(grade.getGrade());
 			if (ascentsForGrade == null) {
 				ascentsForGrade = new LinkedHashSet<>();
@@ -107,5 +107,9 @@ public class TickList implements Iterable<Ascent>, Comparable<TickList> {
 
 	public SortedSet<Ascent> getAscents() {
 		return ascents;
+	}
+
+	public TickListSettings getConfig() {
+		return config;
 	}
 }

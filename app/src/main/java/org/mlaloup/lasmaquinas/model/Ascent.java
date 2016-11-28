@@ -6,19 +6,13 @@ public class Ascent implements Comparable<Ascent> {
 
 	private boolean flash;
 
-	private String area;
-
-	private String name;
-
-	private Grade grade;
+	private Boulder boulder;
 
 	private Date date;
 
-	public Ascent(String name, Grade grade, boolean flash, String area, Date date) {
+	public Ascent(Boulder boulder, Date date, boolean flash) {
 		this.flash = flash;
-		this.area = area;
-		this.name = name;
-		this.grade = grade;
+		this.boulder = boulder;
 		this.date = date;
 	}
 
@@ -28,30 +22,6 @@ public class Ascent implements Comparable<Ascent> {
 
 	public void setFlash(boolean flash) {
 		this.flash = flash;
-	}
-
-	public String getArea() {
-		return area;
-	}
-
-	public void setArea(String area) {
-		this.area = area;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Grade getGrade() {
-		return grade;
-	}
-
-	public void setGrade(Grade grade) {
-		this.grade = grade;
 	}
 
 	public Date getDate() {
@@ -64,17 +34,20 @@ public class Ascent implements Comparable<Ascent> {
 
 	@Override
 	public int compareTo(Ascent otherAscent) {
-		int result = otherAscent.grade.getGrade().compareTo(grade.getGrade());
+		int result = otherAscent.boulder.getGrade().getGrade().compareTo(boulder.getGrade().getGrade());
 		if (result == 0) {
 			result = date.compareTo(otherAscent.date);
 			if (result == 0) {
-				result = name.compareTo(otherAscent.name);
+				result = boulder.getName().compareTo(otherAscent.boulder.getName());
 				if (result == 0) {
-					result = area.compareTo(otherAscent.area);
+					result = boulder.getArea().compareTo(otherAscent.boulder.getArea());
 				}
 			}
 		}
 		return result;
 	}
 
+	public Boulder getBoulder() {
+		return boulder;
+	}
 }
