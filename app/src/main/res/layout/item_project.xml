@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_project_title"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingTop="5dip"
+    android:paddingBottom="5dip"
+    android:paddingLeft="15dip"
+    android:textSize="12sp"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    />

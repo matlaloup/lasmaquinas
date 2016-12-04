@@ -30,6 +30,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import org.mlaloup.lasmaquinas.model.Area;
 import org.mlaloup.lasmaquinas.model.Ascent;
 import org.mlaloup.lasmaquinas.model.Boulder;
 import org.mlaloup.lasmaquinas.model.Climber;
@@ -42,7 +43,8 @@ import org.mlaloup.lasmaquinas.model.settings.TickListSettings;
 public class BleauInfoParser {
 
     /** L'url doit absolument être en HTTPS pour la partie login car la redirection n'est pas automatique dans ce cas */
-    private static final String MAIN_URL = "https://bleau.info";
+    public static final String MAIN_URL = "https://bleau.info";
+
     private static final String PUBLIC_PROFILE_SUB_URL = "/profiles/";
     private static final String PRIVATE_PROFILE_SUB_URL = "/profile";
 
@@ -267,10 +269,20 @@ public class BleauInfoParser {
         String gradeString = StringUtils.trim(textPart2);
         Grade grade = new Grade(gradeString);
         Elements links = repetition.select("a");
-        String name = links.get(0).textNodes().get(0).text();
-        String area = links.get(1).textNodes().get(0).text();
+        Element boulderLink = links.get(0);
+        Element areaLink = links.get(1);
+        String boulderRelativeUrl = boulderLink.attr("href");
+        String areaRelativeUrl = areaLink.attr("href");
 
-        return new Boulder(grade,area,name);
+        String boulderId = StringUtils.removeEnd(StringUtils.substringAfterLast(boulderRelativeUrl,"/"),".html");
+        String areaId = StringUtils.substringAfterLast(areaRelativeUrl,"/");
+
+
+        String name = boulderLink.textNodes().get(0).text();
+        String areaName = areaLink.textNodes().get(0).text();
+
+        Area area = new Area(areaId,areaName);
+        return new Boulder(grade,area,boulderId,name);
     }
 
 

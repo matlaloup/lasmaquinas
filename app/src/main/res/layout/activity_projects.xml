@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+    android:id="@+id/activity_projects"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="org.mlaloup.lasmaquinas.activity.MainActivity">
+    tools:context="org.mlaloup.lasmaquinas.activity.ProjectsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,33 +17,12 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/account"
+            android:id="@+id/synchronize_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
-            android:text="Mon compte"
-            android:onClick="openAccount"
-            android:drawableLeft="@drawable/ic_account_box_black_24dp"
-            />
-
-
-        <Button
-            android:id="@+id/configure"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:text="Paramètres"
-            android:onClick="configure"
-            android:drawableLeft="@drawable/ic_settings_black_24dp"
-            />
-
-        <Button
-            android:id="@+id/update"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:onClick="update"
-            android:text="Actualiser le classement"
+            android:onClick="synchronizeAccount"
+            android:text="Synchroniser"
             android:drawableLeft="@drawable/ic_cached_black_24dp"
             />
     </LinearLayout>
@@ -54,17 +33,19 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/ranking_title"
+            android:id="@+id/project_list_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="16dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingTop="16dp"
-            android:textSize="14dp" />
+            android:textSize="20dp"
+            android:text="Projets"
+            />
 
         <ListView
-            android:id="@+id/last_ranking"
+            android:id="@+id/project_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>

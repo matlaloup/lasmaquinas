@@ -15,6 +15,10 @@
             android:name="org.mlaloup.lasmaquinas.activity.SettingsActivity"
             android:label="@string/app_name">
         </activity>
+        <activity
+            android:name="org.mlaloup.lasmaquinas.activity.ProjectsActivity"
+            android:label="@string/app_name">
+        </activity>
         <activity android:name="org.mlaloup.lasmaquinas.activity.MainActivity" android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

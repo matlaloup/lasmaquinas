@@ -31,7 +31,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.mlaloup.lasmaquinas.activity.util.PreferencesHelper;
 
-import org.mlaloup.lasmaquinas.model.settings.RankingSettings;
 import org.mlaloup.lasmaquinas.parser.BleauInfoParser;
 
 public class AddClimberFragment extends Fragment  {
@@ -181,26 +180,6 @@ public class AddClimberFragment extends Fragment  {
         return true;
     }
 
-
-    /**
-     * Renvoi vrai si le grimpeur est déjà défini.
-     * @param userName
-     * @return
-     */
-    protected boolean climberAlreadyDefined(String userName) {
-        Set<String> climbers = getClimbers();
-        return climbers.contains(userName);
-    }
-    /**
-     * Ajoute le nouveau grimpeur
-     * @param userName
-     */
-    protected void addClimber(String userName) {
-        Set<String> climbers = getClimbers();
-        climbers.add(userName);
-        prefs().edit().putStringSet(CLIMBERS_KEY,climbers).commit();
-    }
-
     protected AsyncTask<String, Void, Boolean> checkProfileExistsTask(final String userName) {
         return new AsyncTask<String, Void, Boolean>() {
             @Override
@@ -221,6 +200,28 @@ public class AddClimberFragment extends Fragment  {
             }
         };
     }
+
+
+    /**
+     * Renvoi vrai si le grimpeur est déjà défini.
+     * @param userName
+     * @return
+     */
+    protected boolean climberAlreadyDefined(String userName) {
+        Set<String> climbers = getClimbers();
+        return climbers.contains(userName);
+    }
+    /**
+     * Ajoute le nouveau grimpeur
+     * @param userName
+     */
+    protected void addClimber(String userName) {
+        Set<String> climbers = getClimbers();
+        climbers.add(userName);
+        prefs().edit().putStringSet(CLIMBERS_KEY,climbers).commit();
+    }
+
+
 
 
     protected void removeClimber(View view) {
@@ -245,7 +246,7 @@ public class AddClimberFragment extends Fragment  {
     }
 
     private SharedPreferences prefs() {
-        return PreferencesHelper.prefs(getActivity().getApplicationContext());
+        return PreferencesHelper.globalSettings(getActivity().getApplicationContext()).get();
     }
 
 }

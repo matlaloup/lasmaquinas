@@ -1,24 +1,29 @@
 package org.mlaloup.lasmaquinas.model;
 
-public class Boulder {
+import org.mlaloup.lasmaquinas.parser.BleauInfoParser;
 
-    private String area;
+public class Boulder implements Comparable<Boulder> {
+
+    private String id;
+
+    private Area area;
 
     private String name;
 
     private Grade grade;
 
-    public Boulder(Grade grade, String area, String name) {
+    public Boulder(Grade grade, Area area, String id, String name) {
         this.grade = grade;
         this.area = area;
         this.name = name;
+        this.id = id;
     }
 
-    public String getArea() {
+    public Area getArea() {
         return area;
     }
 
-    public void setArea(String area) {
+    public void setArea(Area area) {
         this.area = area;
     }
 
@@ -36,6 +41,31 @@ public class Boulder {
 
     public void setGrade(Grade grade) {
         this.grade = grade;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public int compareTo(Boulder otherBoulder) {
+        int gradeComparison = otherBoulder.getGrade().getGrade().compareTo(getGrade().getGrade());
+        if(gradeComparison !=0){
+            return  gradeComparison;
+        }
+        int areaComparison = getArea().getName().compareTo(otherBoulder.getArea().getName());
+        if(areaComparison != 0){
+            return  areaComparison;
+        }
+        return getName().compareTo(otherBoulder.getName());
+    }
+
+    public String getUrl(){
+       return getArea().getURL()+"/"+getId()+".html";
     }
 
 

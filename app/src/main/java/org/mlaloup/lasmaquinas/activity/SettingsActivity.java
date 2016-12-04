@@ -22,11 +22,9 @@ import static org.mlaloup.lasmaquinas.model.settings.RankingSettings.*;
 
 
 import java.util.List;
-import java.util.Map;
 
 import org.mlaloup.lasmaquinas.activity.util.AppCompatPreferenceActivity;
 import org.mlaloup.lasmaquinas.activity.util.PreferencesHelper;
-import org.mlaloup.lasmaquinas.model.settings.RankingSettings;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -112,7 +110,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     private SharedPreferences prefs(){
-        return PreferencesHelper.prefs(getApplicationContext());
+        return PreferencesHelper.globalSettings(getApplicationContext()).get();
     }
 
 

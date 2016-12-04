@@ -1,58 +1,20 @@
 package org.mlaloup.lasmaquinas.model;
 
 
-import org.apache.commons.lang3.StringUtils;
+
 import org.mlaloup.lasmaquinas.model.settings.TickListSettings;
 
 import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
-public class Climber {
-
-    private String login;
-
-    private String fullName;
-
-    private String countryBigram;
+public class Climber extends ClimberRef {
 
     private TickList tickList = new TickList(this, TickListSettings.unlimited());
 
     private Set<Boulder> projects = new HashSet<>();
 
     public Climber(String login){
-        this.login = login;
-        if(login==null){
-            throw new IllegalArgumentException("Null login !");
-        }
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getCountryBigram() {
-        return countryBigram;
-    }
-
-    public void setCountryBigram(String countryBigram) {
-        this.countryBigram = countryBigram;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public String getDisplayName(){
-        if(StringUtils.isNotBlank(fullName)){
-            return fullName;
-        }
-        return login;
+        super(login);
     }
 
     public TickList getTickList() {
@@ -74,12 +36,8 @@ public class Climber {
 
         Climber climber = (Climber) o;
 
-        return login.equals(climber.login);
+        return getLogin().equals(climber.getLogin());
 
     }
 
-    @Override
-    public int hashCode() {
-        return login.hashCode();
-    }
 }

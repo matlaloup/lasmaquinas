@@ -40,7 +40,7 @@ public class Ascent implements Comparable<Ascent> {
 			if (result == 0) {
 				result = boulder.getName().compareTo(otherAscent.boulder.getName());
 				if (result == 0) {
-					result = boulder.getArea().compareTo(otherAscent.boulder.getArea());
+					result = boulder.getArea().getName().compareTo(otherAscent.boulder.getArea().getName());
 				}
 			}
 		}

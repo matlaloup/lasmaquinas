@@ -46,7 +46,7 @@ public class RankingSettings {
 	 * @return
      */
 	public static RankingSettings loadFromPreferences(Context context) {
-		SharedPreferences preferences = PreferencesHelper.prefs(context);
+		SharedPreferences preferences = PreferencesHelper.globalSettings(context).get();
 		RankingSettings settings = new RankingSettings();
 
 		int maxAscents = preferences.getInt(MAX_ASCENTS_COUNT_KEY,TickListSettings.DEFAULT_MAX_ASCENTS_COUNT);

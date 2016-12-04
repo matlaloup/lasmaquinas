@@ -16,7 +16,7 @@ import org.mlaloup.lasmaquinas.model.settings.TickListSettings;
 
 public class TickList implements Iterable<Ascent>, Comparable<TickList> {
 
-	private Climber climber;
+	private ClimberRef climber;
 
 	private TickListSettings config;
 
@@ -30,7 +30,7 @@ public class TickList implements Iterable<Ascent>, Comparable<TickList> {
 	}
 
 	public TickList(Climber climber, TickListSettings config) {
-		this.climber = climber;
+		setClimber(climber);
 		this.config = config;
 	}
 
@@ -43,8 +43,12 @@ public class TickList implements Iterable<Ascent>, Comparable<TickList> {
 		return score;
 	}
 
-	public Climber getClimber() {
+	public ClimberRef getClimber() {
 		return climber;
+	}
+
+	public void setClimber(ClimberRef climber) {
+		this.climber = climber;
 	}
 
 	@Override
