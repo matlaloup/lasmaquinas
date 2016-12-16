@@ -10,21 +10,20 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
-            android:name="org.mlaloup.lasmaquinas.activity.SettingsActivity"
-            android:label="@string/app_name">
-        </activity>
+            android:name=".SettingsActivity"
+            android:label="@string/app_name"></activity>
         <activity
-            android:name="org.mlaloup.lasmaquinas.activity.ProjectsActivity"
+            android:name=".AccountActivity"
+            android:label="@string/app_name"></activity>
+        <activity
+            android:name=".MainActivity"
             android:label="@string/app_name">
-        </activity>
-        <activity android:name="org.mlaloup.lasmaquinas.activity.MainActivity" android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
 

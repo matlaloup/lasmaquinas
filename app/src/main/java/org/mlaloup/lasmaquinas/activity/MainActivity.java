@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -21,15 +20,11 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
-import java.util.concurrent.Exchanger;
 import java.util.concurrent.TimeUnit;
 
 import org.mlaloup.lasmaquinas.activity.util.EncryptionHelper;
@@ -206,9 +201,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void openAccountActivity(Map<String, String> cookies){
-        Intent accountIntent = new Intent(this, ProjectsActivity.class);
+        Intent accountIntent = new Intent(this, AccountActivity.class);
         if(cookies != null) {
-            accountIntent.putExtra(ProjectsActivity.COOKIES_PROVIDED, true);
+            accountIntent.putExtra(AccountActivity.COOKIES_PROVIDED, true);
             for (String key : cookies.keySet()) {
                 accountIntent.putExtra(key, cookies.get(key));
             }
@@ -249,8 +244,8 @@ public class MainActivity extends AppCompatActivity {
                             String something = EncryptionHelper.doSomething(userName);
                             String encryptedPassword = EncryptionHelper.encrypt(password,something);
                             SharedPreferences globalSettings = PreferencesHelper.globalSettings(MainActivity.this).get();
-                            globalSettings.edit().putString(ProjectsActivity.LOGIN_KEY,userName).commit();
-                            globalSettings.edit().putString(ProjectsActivity.PASSWORD_KEY,encryptedPassword).commit();
+                            globalSettings.edit().putString(AccountActivity.LOGIN_KEY,userName).commit();
+                            globalSettings.edit().putString(AccountActivity.PASSWORD_KEY,encryptedPassword).commit();
 
                             openAccountActivity(cookies);
 

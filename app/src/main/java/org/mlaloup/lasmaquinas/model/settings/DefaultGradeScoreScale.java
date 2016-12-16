@@ -41,7 +41,7 @@ public class DefaultGradeScoreScale implements GradeScoreScale {
 		double factor = Math.pow(letterFactor, fullDiff);
 		if (grade.length() > 2) {
 			if ('+' == grade.charAt(2)) {
-				factor = factor * 2;
+				factor = factor * supFactor;
 			}
 		}
 

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.test.ApplicationTestCase;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -15,7 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import org.mlaloup.lasmaquinas.activity.ProjectsActivity;
+import org.mlaloup.lasmaquinas.activity.AccountActivity;
 import org.mlaloup.lasmaquinas.model.Climber;
 import org.mlaloup.lasmaquinas.model.ClimberRef;
 import org.mlaloup.lasmaquinas.model.TickList;
@@ -166,8 +165,8 @@ public class PreferencesHelper {
      */
     public static String[] getCredentials(Context context) {
         SharedPreferences globalSettings = globalSettings(context).get();
-        String login = globalSettings.getString(ProjectsActivity.LOGIN_KEY,null);
-        String encryptedPassword = globalSettings.getString(ProjectsActivity.PASSWORD_KEY,null);
+        String login = globalSettings.getString(AccountActivity.LOGIN_KEY,null);
+        String encryptedPassword = globalSettings.getString(AccountActivity.PASSWORD_KEY,null);
         if(login != null && encryptedPassword != null) {
             String something = EncryptionHelper.doSomething(login);
             String password = EncryptionHelper.decrypt(encryptedPassword,something);
@@ -178,8 +177,8 @@ public class PreferencesHelper {
 
     public static void invalidateCredentials(Context context) {
         SharedPreferences globalSettings = globalSettings(context).get();
-        globalSettings.edit().remove(ProjectsActivity.LOGIN_KEY).commit();
-        globalSettings.edit().remove(ProjectsActivity.PASSWORD_KEY).commit();
+        globalSettings.edit().remove(AccountActivity.LOGIN_KEY).commit();
+        globalSettings.edit().remove(AccountActivity.PASSWORD_KEY).commit();
     }
 
 

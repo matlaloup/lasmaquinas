@@ -1,6 +1,8 @@
 package org.mlaloup.lasmaquinas.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -86,8 +88,8 @@ public class TickList implements Iterable<Ascent>, Comparable<TickList> {
 		score += newScore;
 	}
 
-	public String getSummary() {
-		Map<String, Set<Ascent>> map = new TreeMap<>();
+	public Map<String, Set<Ascent>> getAscentsByGrade(){
+		Map<String, Set<Ascent>> map = new TreeMap<>(Collections.reverseOrder());
 		for (Ascent ascent : ascents) {
 			Grade grade = ascent.getBoulder().getGrade();
 			Set<Ascent> ascentsForGrade = map.get(grade.getGrade());
@@ -97,6 +99,11 @@ public class TickList implements Iterable<Ascent>, Comparable<TickList> {
 			}
 			ascentsForGrade.add(ascent);
 		}
+		return map;
+	}
+
+	public String getSummary() {
+		Map<String, Set<Ascent>> map = getAscentsByGrade();
 
 		StringBuilder result = new StringBuilder();
 		Set<Entry<String, Set<Ascent>>> entries = map.entrySet();
